@@ -20,5 +20,5 @@ ENV HOST=0.0.0.0
 # Expose port 8080
 EXPOSE 8080
 
-# Run the app
-CMD ["npm", "start"]
+# Run the app directly (more reliable in containers than npm start)
+CMD ["node", "server.js"]

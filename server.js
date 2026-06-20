@@ -4,8 +4,8 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const port = Number(process.env.PORT) || 4242;
-const host = process.env.HOST || '0.0.0.0';
+const port = process.env.PORT || 8080;
+
 const corsOrigin = process.env.CORS_ORIGIN || '*';
 
 app.use(
@@ -83,21 +83,12 @@ app.post('/create-payment-intent', async (req, res) => {
   }
 });
 
-app.listen(port, host, () => {
-  console.log('');
-  console.log('Taste O Clock — payment server');
-  console.log('--------------------------------');
-  console.log(`Local:   http://localhost:${port}`);
-  console.log(`Network: http://<your-pc-ip>:${port}`);
-  console.log('');
-  console.log('Endpoints:');
-  console.log(`  GET  http://localhost:${port}/health`);
-  console.log(`  POST http://localhost:${port}/create-payment-intent`);
-  console.log('');
-  console.log(
-    process.env.STRIPE_SECRET_KEY
-      ? 'Stripe secret key: loaded'
-      : 'Stripe secret key: MISSING — copy .env.example to .env',
-  );
-  console.log('');
+const server = app.listen(port, () => {
+  console.log(`[server] Listening on port ${port}`);
+});
+
+
+server.on('error', (error) => {
+  console.error(`[server] Failed to start on ${port}`, error.message);
+  process.exit(1);
 });
